@@ -52,7 +52,7 @@ export const Diagnostics: React.FC<DiagnosticsProps> = ({
           hierarchyResult.data && 
           config.levels.every(level => 
             hierarchyResult.data!.levels.some(hl => hl.issueTypeId === level.issueTypeId)
-          );
+          ) || false;
 
         const result: DiagnosticResult = {
           projectId: project.id,

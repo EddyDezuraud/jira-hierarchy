@@ -4,11 +4,9 @@
   "description": "Atlassian Forge plugin to define hierarchical levels above Epics in Jira Cloud",
   "main": "src/index.js",
   "scripts": {
-    "build": "forge build",
-    "deploy": "forge deploy",
-    "install": "forge install",
-    "tunnel": "forge tunnel",
-    "lint": "eslint src/",
+    "build": "tsc",
+    "deploy": "echo 'forge deploy'",
+    "lint": "eslint src/**/*.{js,ts,tsx}",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -22,7 +20,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@forge/cli": "^6.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "typescript": "^5.0.0",

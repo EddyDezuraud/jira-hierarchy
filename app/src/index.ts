@@ -5,7 +5,7 @@ const resolver = new Resolver();
 
 // Jira API handler for backend operations
 resolver.define('jira-api-handler', async (req) => {
-  const { action, payload } = req.payload;
+  const { action, payload } = req.payload as { action: string; payload: any };
 
   try {
     switch (action) {

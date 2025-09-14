@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HierarchyConfig, JiraProject } from '../types';
+import { HierarchyConfig, JiraProject, HierarchyLevel } from './types';
 
 interface RoadmapViewProps {
   config: HierarchyConfig;
@@ -63,7 +63,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
     // Generate mock hierarchy based on configured levels
     const mockData: HierarchyNode[] = [];
     
-    config.levels.sort((a, b) => b.position - a.position).forEach((level, levelIndex) => {
+    config.levels.sort((a: HierarchyLevel, b: HierarchyLevel) => b.position - a.position).forEach((level: HierarchyLevel, levelIndex: number) => {
       for (let i = 1; i <= 2; i++) { // Create 2 items per level for demo
         const node: HierarchyNode = {
           id: `${level.id}-${i}`,
@@ -145,7 +145,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
       <div className="hierarchy-summary">
         <h4>Configured Hierarchy Levels:</h4>
         <div className="levels-list">
-          {config.levels.sort((a, b) => b.position - a.position).map(level => (
+          {config.levels.sort((a: HierarchyLevel, b: HierarchyLevel) => b.position - a.position).map((level: HierarchyLevel) => (
             <div key={level.id} className="level-summary">
               <span className="level-name">{level.name}</span>
               <span className="level-position">Level {level.position}</span>
