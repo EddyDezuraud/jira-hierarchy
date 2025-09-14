@@ -1,0 +1,44 @@
+{
+  "name": "jira-hierarchy",
+  "version": "1.0.0",
+  "description": "Atlassian Forge plugin to define hierarchical levels above Epics in Jira Cloud",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "forge build",
+    "deploy": "forge deploy",
+    "install": "forge install",
+    "tunnel": "forge tunnel",
+    "lint": "eslint src/",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@forge/bridge": "^3.0.0",
+    "@forge/resolver": "^1.5.0",
+    "@forge/storage": "^1.4.0",
+    "@forge/api": "^3.0.0",
+    "@forge/ui": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@forge/cli": "^6.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-config-react-app": "^7.0.1",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/user-event": "^14.4.3",
+    "audit-ci": "^6.6.1"
+  },
+  "author": "Eddy Dezuraud",
+  "license": "MIT"
+}

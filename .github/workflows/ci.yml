@@ -1,0 +1,97 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: app/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./app
+      run: npm ci
+      
+    - name: Run ESLint
+      working-directory: ./app
+      run: npm run lint
+      
+    - name: Run tests
+      working-directory: ./app
+      run: npm run test -- --coverage --watchAll=false
+      
+    - name: Build application
+      working-directory: ./app
+      run: npm run build
+
+  forge-deploy:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        cache-dependency-path: app/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./app
+      run: npm ci
+      
+    - name: Install Forge CLI
+      run: npm install -g @forge/cli
+      
+    - name: Authenticate with Forge
+      working-directory: ./app
+      run: forge login --non-interactive
+      env:
+        FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+        FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+        
+    - name: Deploy to Forge
+      working-directory: ./app
+      run: |
+        forge deploy --environment production
+        forge install --upgrade --non-interactive --product jira
+      env:
+        FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+        FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+
+  security-scan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run security audit
+      working-directory: ./app
+      run: npm audit --audit-level=high
+      
+    - name: Check for known vulnerabilities
+      working-directory: ./app
+      run: npx audit-ci --config .audit-ci.json || true

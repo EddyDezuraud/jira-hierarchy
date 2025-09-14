@@ -1,0 +1,42 @@
+manifest: 1.0.0
+app:
+  name: jira-hierarchy
+  description: Atlassian Forge plugin to define up to 3 hierarchical levels above Epics in Jira Cloud
+  id: aced:jira-hierarchy:${environment}
+
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+    - manage:jira-configuration
+    - read:issue-type:jira
+    - manage:jira-project
+    - read:me
+
+modules:
+  function:
+    - key: jira-api-handler
+      handler: src/index.jiraApiHandler
+      
+  jira:projectPage:
+    - key: hierarchy-admin-page
+      title: Hierarchy Management
+      url: /hierarchy-admin
+      location: projectPages.projectOperations
+
+  frontend:
+    - key: hierarchy-admin
+      path: src/ui
+      entrypoint: index.tsx
+
+resources:
+  - key: main
+    path: src/ui
+
+environments:
+  development:
+    variables:
+      API_VERSION: "3"
+  production:
+    variables:
+      API_VERSION: "3"
